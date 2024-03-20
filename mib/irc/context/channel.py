@@ -6,6 +6,14 @@ def parse(base_type: str, protocol: str, message: str) -> dict:
     match base_type:
         case 'topic':
             return new_topic(protocol, message)
+        case '332':
+            return topic_current(protocol, message)
+        case '333':
+            return topic_created_by(protocol)
+        case 'join':
+            return join(protocol, message)
+        case 'part':
+            return part(protocol, message)
         case _:
             return {}
 
@@ -38,4 +46,41 @@ def topic_created_by(protocol: str) -> dict:
         'created': created,
         'source': source,
         'channel': channel
+    }
+
+
+def topic_current(protocol: str, message: str) -> dict:
+    args = protocol.split()
+    source = get_source(args[0])
+    channel = args[2]
+    channel_topic = style.remove(message)
+
+    return {
+        'source': source,
+        'channel': channel,
+        'topic': channel_topic
+    }
+
+
+def join(protocol: str, message: str) -> dict:
+    args = protocol.split()
+    source = get_source(args[0])
+    channel = message.strip()
+
+    return {
+        'source': source,
+        'channel': channel
+    }
+
+
+def part(protocol: str, message: str) -> dict:
+    args = protocol.split()
+    source = get_source(args[0])
+    channel = args[2]
+    reason = style.remove(message).strip()
+
+    return {
+        'source': source,
+        'channel': channel,
+        'reason': reason
     }
