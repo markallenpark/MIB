@@ -14,6 +14,10 @@ def set_nickname(nickname: str) -> str:
     return f"NICK {nickname}"
 
 
+def set_username(username: str, realname: str) -> str:
+    return f"USER {username} 0 * :{realname}"
+
+
 def disconnect(reason: str = None) -> str:
     return f"QUIT {reason}" if reason is not None else "QUIT"
 

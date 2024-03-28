@@ -16,5 +16,5 @@ def get_context(base_type: str, protocol: str, message: str) -> dict:
     try:
         return contexts[base_type].parse(base_type, protocol, message)
     except KeyError:
+        """ No context found, return empty context """
         return {}
-
