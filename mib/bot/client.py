@@ -15,18 +15,21 @@ class Client:
     version = '0.0.1'
 
     def send(self, data: str) -> None:
+        """ Send data to stream and get connection status """
+
         self.status.set({"connected": self.stream.send(data)})
-    
+
     def connect(self) -> None:
         """ Ensure that socket is not set before attempting to connect """
+
         self.stream.disconnect()
 
-        """ Server Settings """
+        # Server settings
         host = self.config.get('server.host')
         port = self.config.get('server.port')
         use_ssl = self.config.get('server.use_ssl')
 
-        """ Bot Settings """
+        # Bot settings
         nickname = self.config.get('bot.nickname')
         username = self.config.get('bot.username')
         realname = self.config.get('bot.realname')
@@ -37,12 +40,14 @@ class Client:
         self.send(command.set_username(username, realname))
 
     def start(self):
+        """ Client startup """
+
         self.config = None  # Reset config
 
         self.config = Config(self.version, 'client')
-        
+
         if not self.config.load():
-            """ TODO: Run setup script """
+            # TODO: Run setup script
             print("Configuration does not exist")
             quit()
 
@@ -64,23 +69,26 @@ class Client:
                 self.send(command.send_ping(str(current_time)))
 
     def respond(self, responses: dict) -> None:
+        """ Respond to events """
+
         try:
             commands = responses['commands']
         except KeyError:
             commands = []
-        
+
         try:
             states = responses['states']
         except KeyError:
             states = {}
-        
+
         self.status.set(states)
 
         for response in commands:
             self.send(response)
-    
+
     def handle(self, event: dict) -> None:
-        handler.handle(event)
+        """ Event Handlers """
+        self.respond(handler.handle(event))
 
     def process(self) -> None:
         """ Main script loop """
@@ -99,7 +107,7 @@ class Client:
                     continue
                 case buffer:
                     continue
-            
+
             buffer += new_buff
 
             lines = buffer.split('\n')
@@ -108,7 +116,7 @@ class Client:
                 buffer = lines[-1]
             else:
                 buffer = ''
-            
+
             del lines[-1]
 
             for line in lines:
