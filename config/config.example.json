@@ -1,0 +1,11 @@
+{
+    "server": "irc.server.address",
+    "port": 6667,
+    "nickname": "your-bot-nickname",
+    "username": "your-bot-username",
+    "realname": "MIB Version 0.0.1",
+    "channels": [
+        "#channel1",
+        "#channel2"
+    ]
+}
