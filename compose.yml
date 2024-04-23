@@ -1,0 +1,8 @@
+---
+services:
+  python:
+    image: python:3.12.3-slim
+    volumes:
+      - ./app:/app:z
+      - ./config:/etc/mib:z
+    entrypoint: ["/app/run.sh"]

@@ -1,0 +1,3 @@
+# This is a virtual env for python 3.12.3 that I use on my dev machine
+# outside the container
+venv/

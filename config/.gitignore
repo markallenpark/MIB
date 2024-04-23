@@ -1,0 +1,4 @@
+# Don't commit configurations to repo
+*.json
+!.gitignore
+!*.example.json
