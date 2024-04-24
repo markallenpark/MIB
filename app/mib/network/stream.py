@@ -83,18 +83,18 @@ class Stream:
             return None # Timeout is expected, just means the server hasn't sent
                         # anything new to process.
 
-    def send(self, protocol: str) -> bool:
+    def send(self, api: str) -> bool:
         """
         Send data to socket
 
-        protocol: str   - UTF-8 encoded protocol string to send to the server.
+        api: str   - UTF-8 encoded api string to send to the server.
         """
 
         if self.connection is None: # What are we really even doing if we arne't
             return False            # even connected yet?
 
         self.connection.settimeout(5)               # Don't wait forever
-        data = bytes(f"{protocol}\r\n", "utf-8")
+        data = bytes(f"{api}\r\n", "utf-8")
 
         try:
             self.connection.send(data)
