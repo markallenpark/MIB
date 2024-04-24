@@ -22,6 +22,10 @@ def parse(api: str) -> dict[str, Any]:
         'type': protocol_type,
         'protocol': components['protocol'],
         'message': components['message'],
+        'context': get_context(
+            components['type'],
+            components['protocol'],
+            components['message'])
     }
 
 def get_components(api: str) -> dict[str, str]:
@@ -76,3 +80,14 @@ def get_type(protocol: str) -> str:
         return protocol.lower()
 
     return protocol.split()[1].lower()
+
+def get_context(base_type: str, protocol: str, message: str) -> dict:
+    """
+    Process events through specialized parsers
+    """
+    parsers: dict = {}
+
+    try:
+        return parsers[base_type](protocol, message)
+    except KeyError:
+        return {}
