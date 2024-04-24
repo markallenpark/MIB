@@ -1,6 +1,7 @@
 {
     "server": "irc.server.address",
     "port": 6667,
+    "ssl": false,
     "nickname": "your-bot-nickname",
     "username": "your-bot-username",
     "realname": "MIB Version 0.0.1",
