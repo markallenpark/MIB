@@ -20,6 +20,8 @@ class Stream:
     def __init__(self, throttle: int | None = None) -> None:
         """
         Initialize the class
+
+        throttle: int   - Time to wait between sends in milliseconds
         """
 
         if throttle is not None:
@@ -38,6 +40,10 @@ class Stream:
     def connect(self, host: str, port: int = 6667, use_ssl: bool = False) -> None:
         """
         Connect to server
+
+        host: str       - Hostname or IP Address of IRC Server
+        port: int       - Port IRC server listens to ( default: 6667 )
+        use_ssl: bool   - If true, Wrap socket in SSL/TLS context
         """
         self.disconnect()
         sock = socket(AF_INET, SOCK_STREAM)
@@ -68,23 +74,27 @@ class Stream:
         if self.connection is None:
             raise ConnectionError
 
-        self.connection.settimeout(1/5)
+        self.connection.settimeout(1/5) # Prevent blocking by timing out if
+                                        # there is nothing currently on the line.
 
         try:
             return self.connection.recv(1500).decode('utf-8')
         except TimeoutError:
-            return None
+            return None # Timeout is expected, just means the server hasn't sent
+                        # anything new to process.
 
-    def send(self, text: str) -> bool:
+    def send(self, protocol: str) -> bool:
         """
         Send data to socket
+
+        protocol: str   - UTF-8 encoded protocol string to send to the server.
         """
 
-        if self.connection is None:
-            return False
+        if self.connection is None: # What are we really even doing if we arne't
+            return False            # even connected yet?
 
-        self.connection.settimeout(5)
-        data = bytes(f"{text}\r\n", "utf-8")
+        self.connection.settimeout(5)               # Don't wait forever
+        data = bytes(f"{protocol}\r\n", "utf-8")
 
         try:
             self.connection.send(data)
@@ -95,9 +105,9 @@ class Stream:
             ConnectionRefusedError,
             ConnectionResetError
         ):
-            return False
+            return False    # Connection lost
 
         if self.throttle is not None:
-            sleep(self.throttle)
+            sleep(self.throttle)    # Don't flood
 
-        return True
+        return True # Still connected
