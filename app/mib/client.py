@@ -8,6 +8,7 @@ from mib.irc import api
 from mib.irc import parser
 from mib.network.stream import Stream
 from mib.util import chrono
+import re
 
 class Client:
     """
@@ -97,7 +98,8 @@ class Client:
         out = []
 
         for line in lines:
-            out.append(line.strip()) # This is to remove any carriage returns
+            line = re.sub(r'\s+', ' ', line) # remove extra whitespaces
+            out.append(line.strip())
 
         return out
 

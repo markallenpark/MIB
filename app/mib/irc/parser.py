@@ -4,7 +4,7 @@ Parse IRC API Strings
 
 from datetime import datetime
 from typing import Any
-from mib.irc.context.message import privmsg
+from app.mib.irc.context import chat
 
 def parse(api: str) -> dict[str, Any]:
     """
@@ -117,7 +117,8 @@ def get_context(base_type: str, protocol: str, message: str) -> dict:
     Process events through specialized parsers
     """
     parsers: dict = {
-        'privmsg': privmsg
+        'privmsg': chat.privmsg,
+        'notice': chat.notice
     }
 
     try:
