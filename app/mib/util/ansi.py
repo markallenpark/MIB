@@ -79,6 +79,7 @@ def unstyle(text: str) -> str:
         text = text.replace(f'{esc}4{i}m,1m', '')
         text = text.replace(f'{esc}3{i}m', '')
         text = text.replace(f'{esc}4{i}m', '')
+        i += 1
 
     # strip decorations (bold, underline, reverse)
     text = text.replace(f'{esc}[1m', '')
