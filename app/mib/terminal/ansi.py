@@ -13,7 +13,7 @@ def style(
         bold: bool = False,
         underline: bool = False,
         reverse: bool = False
-):
+) -> str:
     """
     Colorize terminal output
     """
@@ -28,9 +28,6 @@ def style(
         'white': '7',
     }
 
-    fgCode = '3'
-    bgCode = '4'
-
     formatted = ''
 
     if fgColor is not None:
@@ -39,7 +36,7 @@ def style(
         except KeyError:
             raise Exception(f'Foreground color specified not valid: {fgColor}')
 
-        formatted += '\u001b[{fgCode}{fg}m'
+        formatted += '\u001b[3{fg}m'
 
         if fgBright:
             formatted += ',1m'
@@ -50,7 +47,7 @@ def style(
         except KeyError:
             raise Exception(f'Background color specified not valid: {bgColor}')
 
-        formatted += '\u001b[{bgCode}{bg}m'
+        formatted += '\u001b[4{bg}m'
 
         if bgBright:
             formatted += ',1m'
@@ -65,3 +62,26 @@ def style(
     formatted += f'{text}\u001b[0m'
 
     return formatted
+
+def unstyle(text: str) -> str:
+    """
+    Remove ANSI styles from text
+    """
+
+    # Strip colors
+    i = 0
+    while i < 8:
+        text = text.replace(f'\u001b3{i}m,1m', '')
+        text = text.replace(f'\u001b4{i}m,1m', '')
+        text = text.replace(f'\u001b3{i}m', '')
+        text = text.replace(f'\u001b4{i}m', '')
+
+    # strip decorations (bold, underline, reverse)
+    text = text.replace('\u001b[1m', '')
+    text = text.replace('\u001b[4m', '')
+    text = text.replace('\u001b[7m', '')
+
+    # Remove reset
+    text = text.replace('\u001b[0m', '')
+
+    return text
