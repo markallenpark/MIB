@@ -9,7 +9,10 @@ def style(
         fgColor: str = None,
         fgBright: bool = False,
         bgColor: str = None,
-        bgBright: bool = False
+        bgBright: bool = False,
+        bold: bool = False,
+        underline: bool = False,
+        reverse: bool = False
 ):
     """
     Colorize terminal output
@@ -27,7 +30,6 @@ def style(
 
     fgCode = '3'
     bgCode = '4'
-    reset = '\u001b[0m'
 
     formatted = ''
 
@@ -53,6 +55,13 @@ def style(
         if bgBright:
             formatted += ',1m'
 
-    formatted += f'{text}{reset}'
+    if bold:
+        formatted += '\u001b[1m'
+    if underline:
+        formatted += '\u001b[4m'
+    if reverse:
+        formatted += '\u001b[7m'
+
+    formatted += f'{text}\u001b[0m'
 
     return formatted
