@@ -69,8 +69,8 @@ class Client:
         current_time = chrono.monotonic_ms()
 
         if last_ping is None or current_time - last_ping > 120000:
-            self.send(api.send_ping(str(current_time)))
             self.state.update({'last_ping': current_time})
+            self.send(api.send_ping(str(current_time)))
 
     def get_lines(self) -> list:
         """
@@ -92,6 +92,8 @@ class Client:
 
         if self.buffer[-1] != '\n':
             self.buffer = lines[-1]
+        else:
+            self.buffer = ''
 
         del lines[-1]
 
