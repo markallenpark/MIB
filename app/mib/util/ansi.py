@@ -6,9 +6,9 @@ Handles ANSI escape codes for terminal formatting and manipulation
 
 def style(
         text: str,
-        fgColor: str = None,
+        fgColor: str|None = None,
         fgBright: bool = False,
-        bgColor: str = None,
+        bgColor: str|None = None,
         bgBright: bool = False,
         bold: bool = False,
         underline: bool = False,
