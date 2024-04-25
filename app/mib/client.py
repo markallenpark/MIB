@@ -119,7 +119,7 @@ class Client:
                     self.send(api.channel_join(channel))
             case 'ping':
                 # Respond to pings
-                self.state.update({'last_ping': chrono.monotonic_ms})
+                self.state.update({'last_ping': chrono.monotonic_ms()})
                 self.send(api.send_pong(event['message']))
 
     def loop(self) -> None:
