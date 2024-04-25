@@ -4,7 +4,7 @@ Parse IRC API Strings
 
 from datetime import datetime
 from typing import Any
-from app.mib.irc.context import chat
+from mib.irc.context import chat
 
 def parse(api: str) -> dict[str, Any]:
     """
