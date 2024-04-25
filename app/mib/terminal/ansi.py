@@ -17,7 +17,7 @@ def style(
     """
     Colorize terminal output
     """
-    color: dict[str, str] {
+    color: dict[str, str] = {
         'black': '0',
         'red': '1',
         'green': '2',
@@ -25,18 +25,20 @@ def style(
         'blue': '4',
         'magenta': '5',
         'cyan': '6',
-        'white': '7',
+        'white': '7'
     }
+
+    esc = '\u001b'
 
     formatted = ''
 
     if fgColor is not None:
         try:
             fg = color[fgColor.lower()]
-        except KeyError:
-            raise Exception(f'Foreground color specified not valid: {fgColor}')
+        except KeyError as exc:
+            raise TypeError(f'Foreground color specified not valid: {fgColor}') from exc
 
-        formatted += '\u001b[3{fg}m'
+        formatted += f'{esc}[3{fg}m'
 
         if fgBright:
             formatted += ',1m'
@@ -44,22 +46,22 @@ def style(
     if bgColor is not None:
         try:
             bg = color[bgColor.lower()]
-        except KeyError:
-            raise Exception(f'Background color specified not valid: {bgColor}')
+        except KeyError as exc:
+            raise TypeError(f'Background color specified not valid: {bgColor}') from exc
 
-        formatted += '\u001b[4{bg}m'
+        formatted += '{esc}[4{bg}m'
 
         if bgBright:
             formatted += ',1m'
 
     if bold:
-        formatted += '\u001b[1m'
+        formatted += f'{esc}[1m'
     if underline:
-        formatted += '\u001b[4m'
+        formatted += f'{esc}[4m'
     if reverse:
-        formatted += '\u001b[7m'
+        formatted += f'{esc}[7m'
 
-    formatted += f'{text}\u001b[0m'
+    formatted += f'{text}{esc}[0m'
 
     return formatted
 
@@ -68,20 +70,22 @@ def unstyle(text: str) -> str:
     Remove ANSI styles from text
     """
 
+    esc = '\u001b'
+
     # Strip colors
     i = 0
     while i < 8:
-        text = text.replace(f'\u001b3{i}m,1m', '')
-        text = text.replace(f'\u001b4{i}m,1m', '')
-        text = text.replace(f'\u001b3{i}m', '')
-        text = text.replace(f'\u001b4{i}m', '')
+        text = text.replace(f'{esc}3{i}m,1m', '')
+        text = text.replace(f'{esc}4{i}m,1m', '')
+        text = text.replace(f'{esc}3{i}m', '')
+        text = text.replace(f'{esc}4{i}m', '')
 
     # strip decorations (bold, underline, reverse)
-    text = text.replace('\u001b[1m', '')
-    text = text.replace('\u001b[4m', '')
-    text = text.replace('\u001b[7m', '')
+    text = text.replace(f'{esc}[1m', '')
+    text = text.replace(f'{esc}[4m', '')
+    text = text.replace(f'{esc}[7m', '')
 
     # Remove reset
-    text = text.replace('\u001b[0m', '')
+    text = text.replace(f'{esc}[0m', '')
 
     return text
