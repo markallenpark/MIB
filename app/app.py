@@ -14,3 +14,6 @@ class App(Client):
         Initialize the class
         """
         self.config.load('irc')
+
+if __name__ == "__main__":
+    App().run()

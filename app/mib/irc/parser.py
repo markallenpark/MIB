@@ -26,7 +26,7 @@ def parse(api: str) -> dict[str, Any]:
         'message': components['message'],
         'source': source,
         'context': get_context(
-            components['type'],
+            protocol_type,
             components['protocol'],
             components['message'])
     }
