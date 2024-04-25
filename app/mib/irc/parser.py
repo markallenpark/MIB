@@ -41,8 +41,13 @@ def get_components(api: str) -> dict[str, str]:
     components = api.split(':', 2)
 
     # Prevent buffer bleedover
-    if components[0] != '' and components[0][-1] != ' ':
+    #
+    # Changed to a while, just in case-- but it should only need to run through
+    # once
+    while components[0] != '' and components[0][-1] != ' ':
+        print(f"[ERROR] Detected bleed in line: {api}")
         api = api.replace(components[0], '')
+        print(f"[INFO] Bleed correction attempt : {api}")
         components = api.split(':', 2)
 
     try:
