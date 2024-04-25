@@ -4,6 +4,7 @@ Parse IRC API Strings
 
 from datetime import datetime
 from typing import Any
+from mib.irc.context.message import privmsg
 
 def parse(api: str) -> dict[str, Any]:
     """
@@ -14,6 +15,7 @@ def parse(api: str) -> dict[str, Any]:
 
     timestamp: str = datetime.now().isoformat()
     components: dict[str, str] = get_components(api)
+    source: dict[str, str] = get_source(components['protocol'])
     protocol_type: str = get_type(components['protocol'])
 
     return {
@@ -22,6 +24,7 @@ def parse(api: str) -> dict[str, Any]:
         'type': protocol_type,
         'protocol': components['protocol'],
         'message': components['message'],
+        'source': source,
         'context': get_context(
             components['type'],
             components['protocol'],
@@ -70,6 +73,34 @@ def get_components(api: str) -> dict[str, str]:
         "message": message
     }
 
+def get_source(protocol: str) -> dict[str, str]:
+    """
+    Get source of API call
+    """
+    if ' ' not in protocol:
+        return {
+            'type': 'network',
+        }
+
+    source = protocol.split()[1]
+
+    if '@' not in source:
+        return {
+            'type': 'server',
+            'host': source
+        }
+
+    mask = source.split('@')
+    usermask = mask[0].split('!')
+    hostmask = mask[1]
+
+    return {
+        'type': 'user',
+        'nickname': usermask[0],
+        'username': usermask[1],
+        'host': hostmask
+    }
+
 def get_type(protocol: str) -> str:
     """
     Retrieve IRC Protocol type
@@ -85,7 +116,9 @@ def get_context(base_type: str, protocol: str, message: str) -> dict:
     """
     Process events through specialized parsers
     """
-    parsers: dict = {}
+    parsers: dict = {
+        'privmsg': privmsg
+    }
 
     try:
         return parsers[base_type](protocol, message)
