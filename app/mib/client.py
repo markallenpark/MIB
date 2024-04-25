@@ -99,6 +99,7 @@ class Client:
 
         for line in lines:
             line = re.sub(r'\s+', ' ', line) # remove extra whitespaces
+            print(f'<< {line}')
             out.append(line.strip())
 
         return out
