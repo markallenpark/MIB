@@ -40,13 +40,10 @@ def get_components(api: str) -> dict[str, str]:
 
     components = api.split(':', 2)
 
-    try:
-        # Catch any buffer bleed
-        if ' ' not in components[1].strip() and components[1].strip() != '':
-            api = api.replace(components[1], '')
-            components = api.split(':', 2)
-    except IndexError:
-        pass
+    # Prevent buffer bleedover
+    if components[0] != '' and components[0][-1] != ' ':
+        api = api.replace(components[0], '')
+        components = api.split(':', 2)
 
     try:
         prefix = components[0].strip()
