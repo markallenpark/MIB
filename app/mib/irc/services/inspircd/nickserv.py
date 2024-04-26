@@ -3,6 +3,9 @@ Nickserv Module
 """
 from mib.irc import api
 
+def nickserv_command(command: str) -> str:
+    return api.say('nickserv', command)
+
 def access_add(mask: str) -> str:
     """
     Give access to user to use bot's nick
@@ -10,7 +13,7 @@ def access_add(mask: str) -> str:
     mask: str   - user mask (i.e. anyone@*.bepeg.com)
     """
 
-    return api.say('nickserv', f'access add {mask}')
+    return nickserv_command(f'access add {mask}')
 
 def access_remove(mask: str) -> str:
     """
@@ -19,14 +22,14 @@ def access_remove(mask: str) -> str:
     mask: str   - user mask (i.e. anyone@*.bepeg.com)
     """
 
-    return api.say('nickserv', f'access del {mask}')
+    return nickserv_command(f'access del {mask}')
 
 def access_list() -> str:
     """
     List who has access to use this nick
     """
 
-    return api.say('nickserv', 'access list')
+    return nickserv_command('access list')
 
 def ajoin_add(channel: str, key: str|None = None) -> str:
     """
@@ -41,7 +44,7 @@ def ajoin_add(channel: str, key: str|None = None) -> str:
     if key is not None:
         command += f' {key}'
 
-    return api.say('nickserv', command)
+    return nickserv_command(command)
 
 def ajoin_remove(channel: str) -> str:
     """
@@ -49,21 +52,21 @@ def ajoin_remove(channel: str) -> str:
 
     channel: str    - Channel to remove
     """
-    return api.say('nickserv', f'ajoin del {channel}')
+    return nickserv_command(f'ajoin del {channel}')
 
 def ajoin_list() -> str:
     """
     List channels in your auto-join list
     """
 
-    return api.say('nickserv', 'ajoin list')
+    return nickserv_command('ajoin list')
 
 def alist() -> str:
     """
     List channels that you have access on
     """
 
-    return api.say('nickserv', 'alist')
+    return nickserv_command('alist')
 
 def cert_add(fingerprint: str|None = None) -> str:
     """
@@ -73,8 +76,8 @@ def cert_add(fingerprint: str|None = None) -> str:
     fingerprint: str|None   - specify a fingerprint (Optional)
     """
     if fingerprint is not None:
-        return api.say('nickserv', f'cert add {fingerprint}')
-    return api.say('nickserv', 'cert add')
+        return nickserv_command(f'cert add {fingerprint}')
+    return nickserv_command('cert add')
 
 def cert_revoke(fingerprint: str) -> str:
     """
@@ -83,28 +86,28 @@ def cert_revoke(fingerprint: str) -> str:
     fingerprint: str    - Fingerprint to revoke access to
     """
 
-    return api.say('nickserv', f'cert del {fingerprint}')
+    return nickserv_command(f'cert del {fingerprint}')
 
 def cert_list() -> str:
     """
     List certs that are authorized on your automatic identification cert list
     """
 
-    return api.say('nickserv', 'cert list')
+    return nickserv_command('cert list')
 
 def confirm(passcode: str) -> str:
     """
     Confirm registration passcode
     """
 
-    return api.say('nickserv', f'confirm {passcode}')
+    return nickserv_command(f'confirm {passcode}')
 
 def drop(nickname: str) -> str:
     """
     Drop the registration of a nickname
     """
 
-    return api.say('nickserv', f'drop {nickname}')
+    return nickserv_command(f'drop {nickname}')
 
 def group_add(target_nickname: str, password: str) -> str:
     """
@@ -114,7 +117,7 @@ def group_add(target_nickname: str, password: str) -> str:
     password: str           - Password for nicknames in group
     """
 
-    return api.say('nickserv', f'group {target_nickname} {password}')
+    return nickserv_command(f'group {target_nickname} {password}')
 
 def group_remove(nickname: str|None = None) -> str:
     """
@@ -128,16 +131,16 @@ def group_remove(nickname: str|None = None) -> str:
     """
 
     if nickname is not None:
-        return api.say('nickserv', f'ungroup {nickname}')
+        return nickserv_command(f'ungroup {nickname}')
 
-    return api.say('nickserv', 'ungroup')
+    return nickserv_command('ungroup')
 
 def group_list() -> str:
     """
     List all nicknames in your group
     """
 
-    return api.say('nickserv', 'glist')
+    return nickserv_command('glist')
 
 def identify(password: str, nickname: str|None = None) -> str:
     """
@@ -149,9 +152,9 @@ def identify(password: str, nickname: str|None = None) -> str:
     """
 
     if nickname is not None:
-        return api.say('nickserv', f'identify {nickname} {password}')
+        return nickserv_command(f'identify {nickname} {password}')
 
-    return api.say('nickserv', f'identify {password}')
+    return nickserv_command(f'identify {password}')
 
 def info(nickname: str|None) -> str:
     """
@@ -165,9 +168,9 @@ def info(nickname: str|None) -> str:
     """
 
     if nickname is not None:
-        return api.say('nickname', f'info {nickname}')
+        nickserv_command(f'info {nickname}')
 
-    return api.say('nickname', 'info')
+    return nickserv_command('info')
 
 def nick_list(mask: str) -> str:
     """
@@ -175,14 +178,14 @@ def nick_list(mask: str) -> str:
     pattern, in nick!user@host format.
     """
 
-    return api.say('nickserv', f'list {mask}')
+    return nickserv_command(f'list {mask}')
 
 def logout() -> str:
     """
     Logout of nickserv
     """
 
-    return api.say('nickserv', 'logout')
+    return nickserv_command('logout')
 
 
 def recover(nickname: str, password: str) -> str:
@@ -190,21 +193,21 @@ def recover(nickname: str, password: str) -> str:
     Recovers your nick by kicking any services or users currently using it off of it.
     """
 
-    return api.say('nickserv', f'recover {nickname} {password}')
+    return nickserv_command(f'recover {nickname} {password}')
 
 def register(password: str, email: str) -> str:
     """
     Register current nick with nickserv
     """
 
-    return api.say('nickserv', f'register {password} {email}')
+    return nickserv_command(f'register {password} {email}')
 
 def resend() -> str:
     """
     This command will resend you the registration confirmation email.
     """
 
-    return api.say('nickserv', 'resend')
+    return nickserv_command('resend')
 
 def reset_password(nickname: str, email: str) -> str:
     """
@@ -216,7 +219,7 @@ def reset_password(nickname: str, email: str) -> str:
     email: str      - Email address ( must match the one associated with nickname )
     """
 
-    return api.say('nickserv', f'reset {nickname} {email}')
+    return nickserv_command(f'reset {nickname} {email}')
 
 def update() -> str:
     """
@@ -225,7 +228,7 @@ def update() -> str:
     your userflags (lastseentime, etc).
     """
 
-    return api.say('nickserv', 'update')
+    return nickserv_command('update')
 
 def set_autop(enable: bool) -> str:
     """
@@ -238,7 +241,7 @@ def set_autop(enable: bool) -> str:
     """
     flag = 'on' if enable else 'off'
 
-    return api.say('nickserv', f'set autoop {flag}')
+    return nickserv_command(f'set autoop {flag}')
 
 def set_display_nick(nickname: str) -> str:
     """
@@ -248,7 +251,7 @@ def set_display_nick(nickname: str) -> str:
     nickname: str   - Nickname to set
     """
 
-    return api.say('nickserv', f'set display {nickname}')
+    return nickserv_command(f'set display {nickname}')
 
 def set_email(email: str) -> str:
     """
@@ -259,7 +262,7 @@ def set_email(email: str) -> str:
     email: str  - Email to set
     """
 
-    return api.say('nickserv', f'set email {email}')
+    return nickserv_command(f'set email {email}')
 
 def set_greet(message: str) -> str:
     """
@@ -271,7 +274,7 @@ def set_greet(message: str) -> str:
     message: str    - Message to set
     """
 
-    return api.say('nickserv', f'set greet {message}')
+    return nickserv_command(f'set greet {message}')
 
 def hide_email(enable: bool) -> str:
     """
@@ -282,7 +285,7 @@ def hide_email(enable: bool) -> str:
 
     flag = 'on' if enable else 'off'
 
-    return api.say('nickserv', f'set hide email {flag}')
+    return nickserv_command(f'set hide email {flag}')
 
 def hide_services_status(enable: bool) -> str:
     """
@@ -293,7 +296,7 @@ def hide_services_status(enable: bool) -> str:
 
     flag = 'on' if enable else 'off'
 
-    return api.say('nickserv', f'set hide status {flag}')
+    return nickserv_command(f'set hide status {flag}')
 
 def hide_last_user_mask(enable: bool) -> str:
     """
@@ -304,7 +307,7 @@ def hide_last_user_mask(enable: bool) -> str:
 
     flag = 'on' if enable else 'off'
 
-    return api.say('nickserv', f'set hide usermask {flag}')
+    return nickserv_command(f'set hide usermask {flag}')
 
 def hide_last_quit(enable: bool) -> str:
     """
@@ -315,7 +318,7 @@ def hide_last_quit(enable: bool) -> str:
 
     flag = 'on' if enable else 'off'
 
-    return api.say('nickserv', f'set hide quit {flag}')
+    return nickserv_command(f'set hide quit {flag}')
 
 def keep_modes(enable: bool) -> str:
     """
@@ -326,7 +329,7 @@ def keep_modes(enable: bool) -> str:
 
     flag = 'on' if enable else 'off'
 
-    return api.say('nickserv', f'set keepmodes {flag}')
+    return nickserv_command(f'set keepmodes {flag}')
 
 def set_kill(enable: bool) -> str:
     """
@@ -339,7 +342,7 @@ def set_kill(enable: bool) -> str:
 
     flag = 'on' if enable else 'off'
 
-    return api.say('nickserv', f'set kill {flag}')
+    return nickserv_command(f'set kill {flag}')
 
 def set_language(language: str) -> str:
     """
@@ -347,7 +350,7 @@ def set_language(language: str) -> str:
     you (for example, when responding to a command you send).
     """
 
-    return api.say('nickserv', f'set language {language}')
+    return nickserv_command(f'set language {language}')
 
 def set_message(enable: bool) -> str:
     """
@@ -358,14 +361,14 @@ def set_message(enable: bool) -> str:
 
     flag = 'on' if enable else 'off'
 
-    return api.say('nickserv', f'set message {flag}')
+    return nickserv_command(f'set message {flag}')
 
 def set_password(password: str) -> str:
     """
     Change your password for identifying with Nickserv
     """
 
-    return api.say('nickserv', f'set password {password}')
+    return nickserv_command(f'set password {password}')
 
 def set_private(enable: bool) -> str:
     """
@@ -378,7 +381,7 @@ def set_private(enable: bool) -> str:
 
     flag = 'on' if enable else 'off'
 
-    return api.say('nickserv', f'set private {flag}')
+    return nickserv_command(f'set private {flag}')
 
 def set_secure(enable: bool) -> str:
     """
@@ -393,11 +396,11 @@ def set_secure(enable: bool) -> str:
 
     flag = 'on' if enable else 'off'
 
-    return api.say('nickserv', f'set secure {flag}')
+    return nickserv_command(f'set secure {flag}')
 
 def set_url(url: str) -> str:
     """
     Associate a URL with your account
     """
 
-    return api.say('nickserv', f'set url {url}')
+    return nickserv_command(f'set url {url}')
