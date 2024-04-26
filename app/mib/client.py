@@ -2,13 +2,13 @@
 IRC Bot Client Module
 """
 
+import re
 from mib.config import Config
 from mib.status import Status
 from mib.irc import api
 from mib.irc import parser
 from mib.network.stream import Stream
 from mib.util import chrono
-import re
 
 class Client:
     """
