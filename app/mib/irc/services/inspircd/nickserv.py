@@ -327,3 +327,77 @@ def keep_modes(enable: bool) -> str:
     flag = 'on' if enable else 'off'
 
     return api.say('nickserv', f'set keepmodes {flag}')
+
+def set_kill(enable: bool) -> str:
+    """
+    Turns the automatic protection option for your nick
+    on or off. With protection on, if another user
+    tries to take your nick, they will be given one minute to
+    change to another nick, after which NickServ will forcibly change
+    their nick.
+    """
+
+    flag = 'on' if enable else 'off'
+
+    return api.say('nickserv', f'set kill {flag}')
+
+def set_language(language: str) -> str:
+    """
+    Changes the language Services uses when sending messages to
+    you (for example, when responding to a command you send).
+    """
+
+    return api.say('nickserv', f'set language {language}')
+
+def set_message(enable: bool) -> str:
+    """
+    Allows you to choose the way Services are communicating with
+    you. With MESSAGE set, Services will use messages, else they'll
+    use notices.
+    """
+
+    flag = 'on' if enable else 'off'
+
+    return api.say('nickserv', f'set message {flag}')
+
+def set_password(password: str) -> str:
+    """
+    Change your password for identifying with Nickserv
+    """
+
+    return api.say('nickserv', f'set password {password}')
+
+def set_private(enable: bool) -> str:
+    """
+    Turns NickServ's privacy option on or off for your nick.
+    With PRIVATE set, your nickname will not appear in
+    nickname lists generated with NickServ's LIST command.
+    (However, anyone who knows your nickname can still get
+    information on it using the INFO command.)
+    """
+
+    flag = 'on' if enable else 'off'
+
+    return api.say('nickserv', f'set private {flag}')
+
+def set_secure(enable: bool) -> str:
+    """
+    Turns NickServ's security features on or off for your
+    nick. With SECURE set, you must enter your password
+    before you will be recognized as the owner of the nick,
+    regardless of whether your address is on the access
+    list. However, if you are on the access list, NickServ
+    will not auto-kill you regardless of the setting of the
+    KILL option.
+    """
+
+    flag = 'on' if enable else 'off'
+
+    return api.say('nickserv', f'set secure {flag}')
+
+def set_url(url: str) -> str:
+    """
+    Associate a URL with your account
+    """
+
+    return api.say('nickserv', f'set url {url}')
