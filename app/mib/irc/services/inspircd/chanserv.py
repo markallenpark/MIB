@@ -96,6 +96,15 @@ def status(channel: str, user: str) -> str:
     return chanserv_command(f'status {channel} {user}')
 
 def unban(channel: str|None = None, nick: str|None = None) -> str:
+    """
+    Unban user from channel
+
+    If no channel is specified, you will be unbanned from any and all
+    channels where you have permissions to modify the ban list.
+
+    If no nickname is specified, any bans effecting you will be removed
+    from the channel, provided you have permissions to modify the ban list
+    """
     command = 'unban'
 
     if channel is not None:
@@ -106,4 +115,3 @@ def unban(channel: str|None = None, nick: str|None = None) -> str:
             command += ' {nick}'
 
     return chanserv_command(command)
-

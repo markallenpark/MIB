@@ -157,7 +157,7 @@ def notify(mode: str) -> str:
 
     return memoserv_command(f'set notify {mode}')
 
-def limit(limit: int, channel: str|None = None) -> str:
+def set_limit(limit: int, channel: str|None = None) -> str:
     """
     Sets the maximum number of memos a user or channel is
     allowed to have.  Setting the limit to 0 prevents the user
@@ -168,8 +168,6 @@ def limit(limit: int, channel: str|None = None) -> str:
     on which they have such privileges, may not remove their
     limit, and may not set a limit above 20.
     """
-
-    limit = str(limit)
 
     if channel is None:
         return memoserv_command(f'set limit {limit}')
