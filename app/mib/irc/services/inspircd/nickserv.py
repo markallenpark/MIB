@@ -1,9 +1,12 @@
 """
-Nickserv Module
+InspIRCd Nickserv Module
 """
 from mib.irc import api
 
 def nickserv_command(command: str) -> str:
+    """
+    This is here to make it less likely for me to mistype the name of the service
+    """
     return api.say('nickserv', command)
 
 def access_add(mask: str) -> str:
